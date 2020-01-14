@@ -38,6 +38,25 @@ class ApiFacade {
         return promise;
     };
 
+    addEditRecipe = (recipe) => {
+        if (recipe.id === "") {
+            const option = this.makeOptions("POST", true, recipe);
+            const promise = fetch(URL + "/api/recipe/add", option).then(handleHttpErrors);
+            return promise;
+        } else {
+            const option = this.makeOptions("POST", true, recipe);
+            const promise = fetch(URL + "/api/recipe/edit", option).then(handleHttpErrors);
+            return promise;
+        }
+
+    }
+
+    deleteRecipe = (id) => {
+        const option = this.makeOptions("POST", true, { id: id });
+        const promise = fetch(URL + "/api/recipe/delete", option).then(handleHttpErrors);
+        return promise;
+    }
+
     addMenu = (recipes) => {
         const option = this.makeOptions("POST", true, recipes);
         const promise = fetch(URL + "/api/menu/add", option).then(handleHttpErrors);

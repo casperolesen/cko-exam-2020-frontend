@@ -1,6 +1,6 @@
 import React from "react";
 
-const AllRecipes = ({ data, adder }) => {
+const AllRecipes = ({ data, adder, deleter, editer }) => {
     return (
         <div>
             <h3>AllRecipes</h3>
@@ -22,7 +22,9 @@ const AllRecipes = ({ data, adder }) => {
                             <td>{r.prepTime}</td>
                             <td>{r.directions}</td>
                             <td>
-                                <a href="xx" onClick={(e) => { e.preventDefault(); adder(r) }}>add</a>
+                                <a href="xx" onClick={(e) => { e.preventDefault(); adder(r) }}>add</a>,
+                                <a href="xx" onClick={(e) => { e.preventDefault(); deleter(r.id) }}>delete</a>,
+                                <a href="xx" onClick={(e) => { e.preventDefault(); editer(r) }}>edit</a>
                             </td>
                         </tr>
                     ))}

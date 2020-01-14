@@ -1,4 +1,4 @@
-const URL = "http://localhost:8080/securitystarter";
+const URL = "http://localhost:8080/cko-exam-2020-backend";
 function handleHttpErrors(res) {
     if (!res.ok) {
         return Promise.reject({ status: res.status, fullError: res.json() })
@@ -32,6 +32,11 @@ class ApiFacade {
         promise.then(res => this.setToken(res.token));
         return promise;
     }
+
+    getRecipeAll = () => {
+        const promise = fetch(URL + "/api/recipe/all").then(handleHttpErrors);
+        return promise;
+    };
 
     makeOptions(method, addToken, body) {
         var opts = {

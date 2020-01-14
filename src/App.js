@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react"
 import facade from "./apifacade";
 import Navbar from "./Navbar";
 import Login from "./Login";
+import AllRecipes from "./AllRecipes";
+import AddMenu from "./AddMenu";
+
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -14,9 +17,25 @@ import {
 
 function App() {
   const [roles, setRoles] = useState([]);
+  const [recipes, setRecipes] = useState([]); // all recipes
+  const [pickedRecipes, setPickedRecipes] = useState([]); // choosen recipes for menu
 
   const logInState = (r) => {
     setRoles(r);
+  }
+
+  useEffect(() => {
+    facade.getRecipeAll().then(res => {
+      console.log(res);
+      setRecipes(res);
+    });
+  }, []);
+
+  const addRecipeToMenu = (recipe) => {
+    //Call this from the AllHobbies control with the  person to edit
+    //Set the state variable personToAddEdit with this person (a clone) to make the new value flow down via props
+    pickedRecipes.push(recipe);
+    setPickedRecipes([...pickedRecipes]);
   }
 
   return (
@@ -24,7 +43,8 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/">
-          <Home />
+          <AllRecipes data={recipes} adder={addRecipeToMenu}/>
+          <AddMenu data={pickedRecipes}/>
         </Route>
         <Route path="/login">
           <Login logInState={logInState} />
@@ -43,12 +63,6 @@ const PrivateRoute = ({ component: Component, roles: roles, ...rest }) => {
         ? <Component {...props} roles={roles} />
         : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />} />
   )
-}
-
-function Home() {
-  return (
-    <div className="data-wrapper centered-text"><h1>Homepage</h1></div>
-  );
 }
 
 function LoggedIn(props) {

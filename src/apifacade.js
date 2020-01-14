@@ -1,4 +1,5 @@
-const URL = "http://localhost:8080/cko-exam-2020-backend";
+//const URL = "http://localhost:8080/cko-exam-2020-backend";
+const URL = "https://lecasper.dk/cko-exam-2020-backend";
 function handleHttpErrors(res) {
     if (!res.ok) {
         return Promise.reject({ status: res.status, fullError: res.json() })

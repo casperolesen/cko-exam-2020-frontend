@@ -1,9 +1,9 @@
 import React from "react";
 
-const AddMenu = ({ data }) => {
+const AddMenu = ({ data, remover, addMenuHandler }) => {
 
     const ingList = [];
-    const inStock = true;
+    let inStock = true;
 
     if (data.length === 0) {
         return (
@@ -16,11 +16,10 @@ const AddMenu = ({ data }) => {
 
         {
             data.map(r => (
+                inStock = true,
                 console.log(r.ingredients),
-                ingList.push(r.ingredients),
-                r.ingredients.forEach(i => {
-                    console.log("Stock: " + i.stock);
-                })
+                ingList.push(r.ingredients)
+
             ))
         }
 
@@ -43,10 +42,14 @@ const AddMenu = ({ data }) => {
                                 <td>{r.prepTime}</td>
                                 <td>{r.directions}</td>
                                 <td>{inStock.toString()}</td>
+                                <td>
+                                    <a href="xx" onClick={(e) => { e.preventDefault(); remover(r) }}>remove</a>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                <button onClick={(e) => {e.preventDefault(); addMenuHandler(data)}}>Save Menu</button>
             </div>
         )
     }

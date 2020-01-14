@@ -25,10 +25,10 @@ class ApiFacade {
     }
 
     login = (user, pass) => {
-        const options = this.makeOptions("POST", true, {username: user, password: pass});
-        const promise = fetch(URL + "/api/login", options) 
+        const options = this.makeOptions("POST", true, { username: user, password: pass });
+        const promise = fetch(URL + "/api/login", options)
             .then(handleHttpErrors);
-        
+
         promise.then(res => this.setToken(res.token));
         return promise;
     }
@@ -37,6 +37,13 @@ class ApiFacade {
         const promise = fetch(URL + "/api/recipe/all").then(handleHttpErrors);
         return promise;
     };
+
+    addMenu = (recipes) => {
+        const option = this.makeOptions("POST", true, recipes);
+        const promise = fetch(URL + "/api/menu/add", option).then(handleHttpErrors);
+        return promise;
+
+    }
 
     makeOptions(method, addToken, body) {
         var opts = {

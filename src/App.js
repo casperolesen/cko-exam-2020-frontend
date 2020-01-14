@@ -3,6 +3,7 @@ import facade from "./apifacade";
 import Navbar from "./Navbar";
 import Login from "./Login";
 import AllRecipes from "./AllRecipes";
+import AddEditRecipe from "./AddEditRecipe";
 import AddMenu from "./AddMenu";
 
 import './App.css';
@@ -32,10 +33,41 @@ function App() {
   }, []);
 
   const addRecipeToMenu = (recipe) => {
-    //Call this from the AllHobbies control with the  person to edit
-    //Set the state variable personToAddEdit with this person (a clone) to make the new value flow down via props
-    pickedRecipes.push(recipe);
+    let stock = true;
+    
+    if (pickedRecipes.length === 7) {
+      alert("You have already picked 7 recipes. Remove 1 to add another..");
+      return;
+    }
+    
+    recipe.ingredients.forEach(i => {
+      console.log("Stock: " + i.stock);
+      if (i.stock === 0) {
+        stock = false;
+        alert("Not possible to add to Menu. Some ingredients are not in stock..");
+        return;
+      }
+    })
+
+    if (stock) {
+      pickedRecipes.push(recipe);
+      recipes.splice(recipes.indexOf(recipe), 1);
+      setPickedRecipes([...pickedRecipes]);
+      setRecipes([...recipes]);
+    }
+
+  }
+
+  const removeRecipeFromMenu = (recipe) => {
+    pickedRecipes.splice(pickedRecipes.indexOf(recipe), 1);
+    recipes.push(recipe);
     setPickedRecipes([...pickedRecipes]);
+    setRecipes([...recipes]);
+  }
+
+  const addMenuHandler = (data) => {
+    console.log(data);
+    facade.addMenu(data);
   }
 
   return (
@@ -43,8 +75,13 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/">
-          <AllRecipes data={recipes} adder={addRecipeToMenu}/>
-          <AddMenu data={pickedRecipes}/>
+          <AllRecipes data={recipes} adder={addRecipeToMenu} />
+          <AddMenu
+            data={pickedRecipes}
+            remover={removeRecipeFromMenu}
+            addMenuHandler={addMenuHandler}
+          />
+          <AddEditRecipe />
         </Route>
         <Route path="/login">
           <Login logInState={logInState} />

@@ -8,7 +8,7 @@ const AddMenu = ({ data, remover, addMenuHandler }) => {
     if (data.length === 0) {
         return (
             <div>
-                <h3>AddMenu</h3>
+                <h3>New Menu</h3>
                 <p>Please add recipes to menu..</p>
             </div>
         )

@@ -1,5 +1,5 @@
-//const URL = "http://localhost:8080/cko-exam-2020-backend";
-const URL = "https://lecasper.dk/cko-exam-2020-backend";
+const URL = "http://localhost:8080/cko-exam-2020-backend";
+//const URL = "https://lecasper.dk/cko-exam-2020-backend";
 function handleHttpErrors(res) {
     if (!res.ok) {
         return Promise.reject({ status: res.status, fullError: res.json() })
@@ -57,6 +57,11 @@ class ApiFacade {
         const promise = fetch(URL + "/api/recipe/delete", option).then(handleHttpErrors);
         return promise;
     }
+
+    getMenuAll = () => {
+        const promise = fetch(URL + "/api/menu/all").then(handleHttpErrors);
+        return promise;
+    };
 
     addMenu = (recipes) => {
         const option = this.makeOptions("POST", true, recipes);

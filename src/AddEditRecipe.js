@@ -18,24 +18,24 @@ const AddEditRecipe = (props) => {
 
     return (
         <div>
-            <h3>AddEditRecipe</h3>
+            <h3>Add/Edit Recipe</h3>
             <form onSubmit={handleSubmit} onChange={handleChange} >
                 id:
                 <input
                     readOnly id="id"
                     placeholder={recipe.id === "" ? "" : recipe.id}
                 />
-                name:
+                Name:
                 <input
                     id="name"
                     value={recipe.name}
                 />
-                prepTime:
+                Time:
                 <input
                     id="prepTime"
                     value={recipe.prepTime}
                 />
-                directions:
+                Directions:
                 <input
                     id="directions"
                     value={recipe.directions}

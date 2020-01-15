@@ -31,9 +31,11 @@ function Navbar(props) {
             <NavLink exact to="/">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/user">Test</NavLink>
+            <NavLink to="/user">User</NavLink>
           </li>
-  
+          <li>
+            <NavLink to="/menues">Menues</NavLink>
+          </li>
           {facade.getToken() == null ? (<li style={{ float: "right" }}>
             <Link to="/login">Log in</Link>
           </li>) : (<li style={{ float: "right" }}><Link to="/" onClick={logout}>Log out</Link></li>)

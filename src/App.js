@@ -5,6 +5,8 @@ import Login from "./Login";
 import AllRecipes from "./AllRecipes";
 import AddEditRecipe from "./AddEditRecipe";
 import AddMenu from "./AddMenu";
+import RecipeDetails from "./RecipeDetails";
+import AllMenues from "./AllMenues";
 
 import './App.css';
 import {
@@ -22,6 +24,7 @@ function App() {
   const [recipeToAddEdit, setRecipeToAddEdit] = useState(emptyRecipe);
   const [recipes, setRecipes] = useState([]); // all recipes
   const [pickedRecipes, setPickedRecipes] = useState([]); // choosen recipes for menu
+  const [menues, setMenues] = useState([]); // all menues
 
   const logInState = (r) => {
     setRoles(r);
@@ -29,8 +32,10 @@ function App() {
 
   useEffect(() => {
     facade.getRecipeAll().then(res => {
-      console.log(res);
       setRecipes(res);
+    });
+    facade.getMenuAll().then(res => {
+      setMenues(res);
     });
   }, []);
 
@@ -43,7 +48,6 @@ function App() {
     }
 
     recipe.ingredients.forEach(i => {
-      console.log("Stock: " + i.stock);
       if (i.stock === 0) {
         stock = false;
         alert("Not possible to add to Menu. Some ingredients are not in stock..");
@@ -68,8 +72,8 @@ function App() {
   }
 
   const addMenuHandler = (data) => {
-    console.log(data);
     facade.addMenu(data);
+    setPickedRecipes([]);
   }
 
   const editRecipe = (recipe) => {
@@ -99,6 +103,24 @@ function App() {
     setRecipes(filtered);
   }
 
+  const handleRecipeSearch = (value) => {
+    if (value === "") {
+      resetRecipeSearch();
+    } else {
+      const filter = recipes.filter(x => {
+        return x.name.toLowerCase().includes(value.toLowerCase());
+      });
+      setRecipes(filter);
+    }
+    
+  };
+
+  const resetRecipeSearch = () => {
+    facade.getRecipeAll().then(res => {
+      setRecipes(res);
+    });
+  };
+
   return (
     <Router>
       <Navbar />
@@ -109,6 +131,8 @@ function App() {
             adder={addRecipeToMenu}
             deleter={deleteRecipe}
             editer={editRecipe}
+            searcher={handleRecipeSearch}
+            reseter={resetRecipeSearch}
           />
           <AddMenu
             data={pickedRecipes}
@@ -117,11 +141,17 @@ function App() {
           />
           <AddEditRecipe
             newRecipe={recipeToAddEdit}
-            //  Next two lines, are if you decide to use the pattern introduced in the day-2 exercises
             addEditRecipe={storeAddEditRecipe}
             key={recipeToAddEdit.id}
           />
         </Route>
+        <Route path="/details/:recipeId"
+          render={(props) => <RecipeDetails data={recipes} {...props} />}
+        />
+        <Route path="/menues">
+          <AllMenues data={menues} />
+        </Route>
+        
         <Route path="/login">
           <Login logInState={logInState} />
         </Route>
